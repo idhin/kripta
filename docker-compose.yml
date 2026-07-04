@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kripta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-kripta}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kripta}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-kripta}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-kripta}?schema=public
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      # Set "true" bila berada di belakang reverse proxy HTTPS (WAJIB untuk produksi).
+      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-false}
+      SESSION_ABSOLUTE_TTL: ${SESSION_ABSOLUTE_TTL:-2592000}
+      SESSION_IDLE_TTL: ${SESSION_IDLE_TTL:-43200}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 249 249 247;
+  --surface: 255 255 255;
+  --surface-2: 244 244 241;
+  --line: 226 226 221;
+  --fg: 24 24 27;
+  --muted: 113 113 122;
+  --accent: 5 150 105;
+  --accent-fg: 255 255 255;
+  --danger: 220 38 38;
+  --success: 22 163 74;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 9 9 11;
+  --surface: 20 20 23;
+  --surface-2: 28 28 33;
+  --line: 39 39 45;
+  --fg: 244 244 246;
+  --muted: 150 150 160;
+  --accent: 45 212 167;
+  --accent-fg: 9 9 11;
+  --danger: 248 113 113;
+  --success: 74 222 128;
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-fg font-sans antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: rgb(var(--accent) / 0.25);
+}
+
+/* Fokus keyboard yang konsisten & aksesibel */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent) / 0.6);
+  outline-offset: 2px;
+}
+
+/* Subtle grid/glow background untuk halaman auth */
+.aurora {
+  background:
+    radial-gradient(60rem 30rem at 50% -20%, rgb(var(--accent) / 0.10), transparent 70%),
+    radial-gradient(40rem 24rem at 90% 10%, rgb(var(--accent) / 0.06), transparent 70%);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Scrollbar halus */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--line)) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

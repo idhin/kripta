@@ -1,0 +1,126 @@
+// Kripta - skema database.
+// Prinsip: server hanya menyimpan hash & ciphertext. Tidak ada secret OTP,
+// password, atau kunci enkripsi dalam bentuk plaintext.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPERADMIN
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+model User {
+  id     String     @id @default(cuid())
+  email  String     @unique
+  role   Role       @default(USER)
+  status UserStatus @default(ACTIVE)
+
+  // Autentikasi zero-knowledge: server menyimpan Argon2id(authHash) dari klien.
+  authHash String
+
+  // Parameter KDF publik (salt & params) agar klien bisa menurunkan kunci saat login.
+  kdfSalt   String
+  kdfParams Json
+
+  // Kredensial recovery (server menyimpan Argon2id(recoveryAuthHash) dari klien).
+  recoveryAuthHash String
+
+  // vaultKey yang dibungkus (terenkripsi) oleh kunci turunan password & recovery code.
+  protectedVaultKey           String
+  protectedVaultKeyByRecovery String
+
+  failedAttempts Int       @default(0)
+  lockedUntil    DateTime?
+  lastLoginAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions       Session[]
+  vaultItems     VaultItem[]
+  invitesCreated Invite[]    @relation("InviteCreatedBy")
+  inviteUsed     Invite?     @relation("InviteUsedBy")
+  auditLogs      AuditLog[]
+
+  @@index([status])
+}
+
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  tokenHash     String    @unique
+  csrfSecret    String
+  ip            String?
+  userAgent     String?
+  createdAt     DateTime  @default(now())
+  expiresAt     DateTime
+  idleExpiresAt DateTime
+  revokedAt     DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Invite {
+  id          String   @id @default(cuid())
+  tokenHash   String   @unique
+  email       String?
+  role        Role     @default(USER)
+  createdById String
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  usedAt      DateTime?
+  usedById    String?  @unique
+
+  createdBy User  @relation("InviteCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  usedBy    User? @relation("InviteUsedBy", fields: [usedById], references: [id], onDelete: SetNull)
+
+  @@index([createdById])
+}
+
+model VaultItem {
+  id     String @id @default(cuid())
+  userId String
+
+  // Blob terenkripsi (AES-GCM) berisi seluruh field OTP. Server tidak pernah tahu isinya.
+  ciphertext String
+  nonce      String
+  order      Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  ip        String?
+  userAgent String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
