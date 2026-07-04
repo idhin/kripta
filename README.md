@@ -58,14 +58,27 @@ Most authenticators either lock your secrets to a single device or hand your dat
 
 Kripta uses a Bitwarden-style key hierarchy, derived entirely on the client:
 
-```
-password --Argon2id(salt)--> masterKey --HKDF--> stretchedKey --> wraps vaultKey
-                               |
-                               +--SHA-256--> authHash --> (server) Argon2id(authHash)
+```mermaid
+flowchart TD
+    PW["Master password"] -->|"Argon2id + salt"| MK["masterKey"]
+    MK -->|"HKDF"| SK["stretchedKey"]
+    MK -->|"SHA-256"| AH["authHash"]
+    RC["Recovery code"] -->|"HKDF"| RK["recoveryKey"]
 
-vaultKey (random 32B) --AES-GCM by stretchedKey--> protectedVaultKey            (stored on server)
-vaultKey             --AES-GCM by recoveryKey (from recovery code)--> protectedVaultKeyByRecovery
-each OTP item        --AES-GCM by vaultKey--> ciphertext                          (stored on server)
+    VK(["vaultKey (random 32 bytes)"])
+    SK -->|"AES-GCM wrap"| PVK["protectedVaultKey"]
+    VK --> PVK
+    RK -->|"AES-GCM wrap"| PVKR["protectedVaultKeyByRecovery"]
+    VK --> PVKR
+    VK -->|"AES-GCM, per item"| CT["OTP ciphertext"]
+    AH --> AHH["Argon2id(authHash)"]
+
+    subgraph SERVER["Stored on the server: ciphertext and hashes only"]
+        AHH
+        PVK
+        PVKR
+        CT
+    end
 ```
 
 **What the server stores:** `Argon2id(authHash)`, `Argon2id(recoveryAuthHash)`, KDF salt and parameters (public), `protectedVaultKey`, `protectedVaultKeyByRecovery`, and item ciphertext. It never stores passwords, secrets, or keys in plaintext.
