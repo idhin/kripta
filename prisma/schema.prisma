@@ -3,7 +3,9 @@
 // password, atau kunci enkripsi dalam bentuk plaintext.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // "native" untuk dev lokal; target musl OpenSSL 3.x untuk image Alpine (Docker).
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {

@@ -13,7 +13,7 @@ services:
     # jaringan internal compose). Buka baris di bawah HANYA jika butuh akses
     # eksternal, dan tetap pakai port tak umum agar tidak bentrok.
     # ports:
-    #   - "${DB_PORT:-25432}:5432"
+    #   - "${DB_PORT:-15432}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kripta}"]
       interval: 5s

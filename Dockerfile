@@ -2,7 +2,10 @@
 
 # ---------- Base ----------
 FROM node:20-alpine AS base
-RUN apk add --no-cache libc6-compat
+# openssl wajib agar Prisma mendeteksi OpenSSL 3.x dan memuat query engine
+# yang benar (libssl.so.3). Tanpa ini, engine default mencari libssl.so.1.1
+# yang tidak ada di Alpine terbaru sehingga app gagal start.
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # ---------- Dependencies (semua, untuk build) ----------
