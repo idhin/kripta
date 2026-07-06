@@ -106,15 +106,17 @@ cat > .env <<'EOF'
 POSTGRES_USER=kripta
 POSTGRES_PASSWORD=change-this-to-a-strong-password
 POSTGRES_DB=kripta
-APP_URL=http://localhost:3000
+APP_URL=http://localhost:28347
 AUTH_COOKIE_SECURE=false
-APP_PORT=3000
+APP_PORT=28347
 EOF
 
 docker compose up -d --build
 ```
 
-Open `http://localhost:3000`. You will be redirected to **/install** to create the superadmin. Save the **recovery code** that is shown.
+Open `http://localhost:28347`. You will be redirected to **/install** to create the superadmin. Save the **recovery code** that is shown.
+
+> The default host port is intentionally uncommon (`28347`) so it will not clash with other services on your server. Change `APP_PORT` (and `APP_URL` to match) to anything you like. The containers are named `kripta-app` and `kripta-db`.
 
 > **Production:** put Kripta behind an HTTPS reverse proxy (Caddy, Nginx, or Traefik), then set `APP_URL=https://your-domain` and `AUTH_COOKIE_SECURE=true`.
 
@@ -146,6 +148,7 @@ Useful scripts: `npm run db:studio` (Prisma Studio), `npm run db:deploy` (produc
 | `AUTH_COOKIE_SECURE` | Set to `true` only when served over HTTPS | `false` |
 | `SESSION_ABSOLUTE_TTL` | Absolute session lifetime, in seconds | `2592000` (30 days) |
 | `SESSION_IDLE_TTL` | Idle session lifetime, in seconds | `43200` (12 hours) |
+| `APP_PORT` | Host port published by Docker Compose (container listens on 3000) | `28347` |
 
 ## Backup
 
