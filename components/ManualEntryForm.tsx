@@ -25,9 +25,33 @@ interface ManualEntryFormProps {
 const selectClass =
   "h-11 w-full rounded-lg border border-line bg-surface-2 px-3 text-sm text-fg outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/25";
 
+const ISSUER_PRESETS = [
+  "Instagram",
+  "Google",
+  "TikTok",
+  "Facebook",
+  "X (Twitter)",
+  "WhatsApp",
+  "Telegram",
+  "GitHub",
+  "Microsoft",
+  "Apple",
+  "Discord",
+  "Amazon",
+  "LinkedIn",
+  "Dropbox",
+  "Steam",
+];
+const OTHER = "__other__";
+
 export function ManualEntryForm({ initial, submitLabel, onSubmit }: ManualEntryFormProps) {
   const t = useT();
   const [issuer, setIssuer] = useState(initial?.issuer ?? "");
+  const presetMatch = ISSUER_PRESETS.find(
+    (p) => p.toLowerCase() === (initial?.issuer ?? "").trim().toLowerCase(),
+  );
+  const [isOther, setIsOther] = useState(!!initial?.issuer && !presetMatch);
+  const [selected, setSelected] = useState(presetMatch ?? (initial?.issuer ? OTHER : ""));
   const [label, setLabel] = useState(initial?.label ?? "");
   const [secret, setSecret] = useState(initial?.secret ?? "");
   const [type, setType] = useState<OtpType>(initial?.type ?? "totp");
@@ -56,7 +80,40 @@ export function ManualEntryForm({ initial, submitLabel, onSubmit }: ManualEntryF
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Field label={t("manual.issuer")}>
-        <Input placeholder={t("manual.issuerPlaceholder")} value={issuer} onChange={(e) => setIssuer(e.target.value)} autoFocus />
+        <select
+          className={selectClass}
+          value={selected}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSelected(value);
+            if (value === OTHER) {
+              setIsOther(true);
+              setIssuer("");
+            } else {
+              setIsOther(false);
+              setIssuer(value);
+            }
+          }}
+        >
+          <option value="" disabled>
+            {t("manual.issuerSelect")}
+          </option>
+          {ISSUER_PRESETS.map((preset) => (
+            <option key={preset} value={preset}>
+              {preset}
+            </option>
+          ))}
+          <option value={OTHER}>{t("manual.issuerOther")}</option>
+        </select>
+        {isOther && (
+          <Input
+            className="mt-2"
+            placeholder={t("manual.issuerPlaceholder")}
+            value={issuer}
+            onChange={(e) => setIssuer(e.target.value)}
+            autoFocus
+          />
+        )}
       </Field>
       <Field label={t("manual.account")}>
         <Input placeholder={t("manual.accountPlaceholder")} value={label} onChange={(e) => setLabel(e.target.value)} />

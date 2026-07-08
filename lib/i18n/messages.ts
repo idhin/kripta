@@ -95,6 +95,8 @@ const en: Dict = {
 
   // Manual entry form
   "manual.issuer": "Service name (issuer)",
+  "manual.issuerSelect": "Select service",
+  "manual.issuerOther": "Other",
   "manual.issuerPlaceholder": "e.g. GitHub",
   "manual.account": "Account / email (optional)",
   "manual.accountPlaceholder": "name@email.com",
@@ -330,6 +332,8 @@ const id: Dict = {
   "edit.submit": "Simpan perubahan",
 
   "manual.issuer": "Nama layanan (issuer)",
+  "manual.issuerSelect": "Pilih layanan",
+  "manual.issuerOther": "Lainnya",
   "manual.issuerPlaceholder": "Contoh: GitHub",
   "manual.account": "Akun / email (opsional)",
   "manual.accountPlaceholder": "nama@email.com",
