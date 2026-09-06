@@ -13,7 +13,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, React.InputHTMLAttribu
         <input
           ref={ref}
           type={show ? "text" : "password"}
-          className={`h-11 w-full rounded-xl border border-line/80 bg-surface-2/60 pl-3.5 pr-11 text-sm text-fg outline-none transition placeholder:text-muted/60 focus:border-glow/60 focus:bg-surface-2/90 focus:ring-4 focus:ring-glow/15 ${className}`}
+          className={`h-11 w-full rounded-lg border border-line bg-surface-2 pl-3.5 pr-11 text-sm text-fg outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/25 ${className}`}
           {...props}
         />
         <button

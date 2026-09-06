@@ -73,9 +73,9 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
   return (
     <div className="min-h-dvh md:flex">
       {/* Sidebar desktop */}
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-line/70 bg-surface/60 px-4 py-5 backdrop-blur-xl md:flex">
+      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-line bg-surface px-4 py-5 md:flex">
         <div className="mb-8 flex items-center gap-2.5 px-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-[0_8px_20px_-8px_rgb(var(--glow)/0.6)] ring-1 ring-inset ring-white/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-accent-fg">
             <BrandMark width={22} height={22} />
           </div>
           <span className="text-base font-semibold tracking-tight">Kripta</span>
@@ -89,25 +89,20 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                  active
-                    ? "bg-gradient-to-r from-glow/15 to-transparent text-fg ring-1 ring-inset ring-glow/25"
-                    : "text-muted hover:bg-surface-2/70 hover:text-fg"
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                  active ? "bg-surface-2 text-fg" : "text-muted hover:bg-surface-2 hover:text-fg"
                 }`}
               >
-                {active && (
-                  <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_10px_rgb(var(--glow)/0.8)]" />
-                )}
-                <Icon width={18} height={18} className={active ? "text-accent" : ""} />
+                <Icon width={18} height={18} />
                 {t(item.labelKey)}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mt-auto border-t border-line/70 pt-3">
+        <div className="mt-auto border-t border-line pt-3">
           <div className="mb-2 flex items-center gap-2 px-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-accent-2 to-accent text-xs font-semibold text-accent-fg ring-1 ring-inset ring-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-xs font-semibold text-fg">
               {user.email.slice(0, 1).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
@@ -131,20 +126,20 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
       {/* Konten */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-line/60 bg-bg/60 px-4 py-3 backdrop-blur-xl md:px-8">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-bg/80 px-4 py-3 backdrop-blur md:px-8">
           <div className="flex items-center gap-2 md:hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-[0_6px_16px_-6px_rgb(var(--glow)/0.6)] ring-1 ring-inset ring-white/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-fg">
               <BrandMark width={18} height={18} />
             </div>
-            <span className="text-sm font-semibold tracking-tight">Kripta</span>
+            <span className="text-sm font-semibold">Kripta</span>
           </div>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="ml-auto flex items-center gap-2 rounded-xl border border-line/80 bg-surface/50 px-3 py-2 text-sm text-muted backdrop-blur-sm transition hover:border-glow/40 hover:text-fg md:w-72"
+            className="ml-auto flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted transition hover:text-fg md:w-72"
           >
             <SearchIcon width={16} height={16} />
             <span className="hidden md:inline">{t("shell.search")}</span>
-            <span className="ml-auto hidden rounded-md border border-line/80 bg-surface-2/60 px-1.5 py-0.5 text-[10px] font-semibold md:inline">
+            <span className="ml-auto hidden rounded border border-line px-1.5 py-0.5 text-[10px] font-medium md:inline">
               ⌘K
             </span>
           </button>
@@ -158,7 +153,7 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
       </div>
 
       {/* Bottom nav mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-around border-t border-line/60 bg-surface/70 px-2 py-2 backdrop-blur-xl md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-around border-t border-line bg-surface/95 px-2 py-2 backdrop-blur md:hidden">
         {items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -167,7 +162,7 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
               key={item.href}
               href={item.href}
               className={`flex flex-1 flex-col items-center gap-0.5 rounded-lg py-1.5 text-[11px] font-medium transition ${
-                active ? "text-accent [&_svg]:drop-shadow-[0_0_6px_rgb(var(--glow)/0.7)]" : "text-muted"
+                active ? "text-accent" : "text-muted"
               }`}
             >
               <Icon width={20} height={20} />

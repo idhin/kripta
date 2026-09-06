@@ -41,10 +41,8 @@ export function QrScanner({ onResult }: QrScannerProps) {
           },
           {
             preferredCamera: "environment",
-            // Overlay bawaan library (kotak kuning, absolute) sering salah posisi
-            // di dalam modal & bentrok dengan tema. Kita gambar bingkai sendiri.
-            highlightScanRegion: false,
-            highlightCodeOutline: false,
+            highlightScanRegion: true,
+            highlightCodeOutline: true,
             maxScansPerSecond: 5,
             returnDetailedScanResult: true,
           }
@@ -77,16 +75,8 @@ export function QrScanner({ onResult }: QrScannerProps) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-2xl bg-black ring-1 ring-inset ring-white/10">
+      <div className="relative aspect-square w-full max-w-xs overflow-hidden rounded-2xl bg-black">
         <video ref={videoRef} className="h-full w-full object-cover" playsInline muted />
-        {status === "running" && (
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2">
-            <span className="absolute left-0 top-0 h-7 w-7 rounded-tl-lg border-l-2 border-t-2 border-accent drop-shadow-[0_0_6px_rgb(var(--glow)/0.8)]" />
-            <span className="absolute right-0 top-0 h-7 w-7 rounded-tr-lg border-r-2 border-t-2 border-accent drop-shadow-[0_0_6px_rgb(var(--glow)/0.8)]" />
-            <span className="absolute bottom-0 left-0 h-7 w-7 rounded-bl-lg border-b-2 border-l-2 border-accent drop-shadow-[0_0_6px_rgb(var(--glow)/0.8)]" />
-            <span className="absolute bottom-0 right-0 h-7 w-7 rounded-br-lg border-b-2 border-r-2 border-accent drop-shadow-[0_0_6px_rgb(var(--glow)/0.8)]" />
-          </div>
-        )}
         {status !== "running" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center text-white/70">
             <CameraIcon width={32} height={32} />
