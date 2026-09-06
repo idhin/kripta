@@ -67,7 +67,7 @@ export function VaultView() {
             {t("vault.count", { count: accounts.length })}
           </p>
         </div>
-        <Button onClick={() => setAddOpen(true)} size="md" className="hidden sm:inline-flex">
+        <Button onClick={() => setAddOpen(true)} size="md" className="shrink-0">
           <PlusIcon width={18} height={18} /> {t("action.add")}
         </Button>
       </div>
@@ -125,10 +125,12 @@ export function VaultView() {
         </div>
       )}
 
-      {/* FAB mobile */}
+      {/* FAB mobile — persisten saat scroll daftar panjang. Diangkat di atas
+          bottom-nav (z-40 > z-30) dan melewati safe-area iOS. */}
       <button
         onClick={() => setAddOpen(true)}
-        className="fixed bottom-20 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-6px_rgb(var(--glow)/0.65)] ring-1 ring-inset ring-white/25 transition hover:brightness-110 active:scale-95 sm:hidden"
+        style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 5.5rem)" }}
+        className="fixed right-5 z-40 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-6px_rgb(var(--glow)/0.65)] ring-1 ring-inset ring-white/25 transition hover:brightness-110 active:scale-95 sm:hidden"
         aria-label={t("vault.emptyAdd")}
       >
         <PlusIcon width={24} height={24} />
