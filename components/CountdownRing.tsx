@@ -28,7 +28,10 @@ export function CountdownRing({ remaining, period, size = 40, stroke = 3.5 }: Co
           className={urgent ? "stroke-danger" : "stroke-accent"}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ transition: "stroke-dashoffset 1s linear" }}
+          style={{
+            transition: "stroke-dashoffset 1s linear",
+            filter: `drop-shadow(0 0 5px rgb(var(--${urgent ? "danger" : "glow"}) / 0.6))`,
+          }}
         />
       </svg>
       <span

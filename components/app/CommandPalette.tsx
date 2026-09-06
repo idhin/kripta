@@ -55,9 +55,9 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[12vh]">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-lg animate-scale-in overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl">
-        <div className="flex items-center gap-3 border-b border-line px-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-fade-in" onClick={onClose} />
+      <div className="glass relative z-10 w-full max-w-lg animate-scale-in overflow-hidden rounded-2xl shadow-pop">
+        <div className="flex items-center gap-3 border-b border-line/60 px-4">
           <SearchIcon width={18} height={18} className="text-muted" />
           <input
             ref={inputRef}
@@ -75,10 +75,10 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
               <button
                 key={acc.id}
                 onClick={() => copy(acc.id)}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-surface-2"
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-surface-2/70"
               >
                 <div
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white ring-1 ring-inset ring-white/15"
                   style={{ backgroundColor: issuerColor(acc.issuer || acc.label) }}
                 >
                   {issuerInitials(acc.issuer || acc.label)}

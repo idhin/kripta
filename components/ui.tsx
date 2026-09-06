@@ -6,15 +6,18 @@ type ButtonVariant = "primary" | "outline" | "ghost" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-accent text-accent-fg hover:opacity-90 shadow-sm",
-  outline: "border border-line bg-transparent text-fg hover:bg-surface-2",
-  ghost: "text-muted hover:text-fg hover:bg-surface-2",
-  danger: "bg-danger text-white hover:opacity-90",
+  primary:
+    "sheen bg-gradient-to-b from-accent-2 to-accent text-accent-fg shadow-[0_1px_0_0_rgb(255_255_255/0.28)_inset,0_8px_24px_-8px_rgb(var(--glow)/0.55)] hover:brightness-[1.08] active:brightness-95",
+  outline:
+    "border border-line/80 bg-surface/50 text-fg backdrop-blur-sm hover:border-glow/40 hover:bg-surface-2/70",
+  ghost: "text-muted hover:text-fg hover:bg-surface-2/70",
+  danger:
+    "bg-gradient-to-b from-danger to-danger/85 text-white shadow-[0_1px_0_0_rgb(255_255_255/0.2)_inset,0_8px_24px_-8px_rgb(var(--danger)/0.5)] hover:brightness-110",
 };
 
 const sizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-xs rounded-lg gap-1.5",
-  md: "h-10 px-4 text-sm rounded-lg gap-2",
+  md: "h-10 px-4 text-sm rounded-xl gap-2",
   lg: "h-12 px-5 text-sm rounded-xl gap-2",
 };
 
@@ -46,7 +49,7 @@ export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTML
     return (
       <input
         ref={ref}
-        className={`h-11 w-full rounded-lg border border-line bg-surface-2 px-3.5 text-sm text-fg outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/25 ${className}`}
+        className={`h-11 w-full rounded-xl border border-line/80 bg-surface-2/60 px-3.5 text-sm text-fg outline-none transition placeholder:text-muted/60 focus:border-glow/60 focus:bg-surface-2/90 focus:ring-4 focus:ring-glow/15 ${className}`}
         {...props}
       />
     );
@@ -78,9 +81,7 @@ export function Field({
 }
 
 export function Card({ className = "", children }: { className?: string; children: React.ReactNode }) {
-  return (
-    <div className={`rounded-2xl border border-line bg-surface ${className}`}>{children}</div>
-  );
+  return <div className={`glass rounded-2xl ${className}`}>{children}</div>;
 }
 
 export function Spinner({ className = "h-5 w-5" }: { className?: string }) {

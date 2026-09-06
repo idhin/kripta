@@ -3,30 +3,46 @@
 @tailwind utilities;
 
 :root {
-  --bg: 249 249 247;
+  --bg: 248 249 247;
+  --bg-deep: 240 242 238;
   --surface: 255 255 255;
-  --surface-2: 244 244 241;
-  --line: 226 226 221;
-  --fg: 24 24 27;
-  --muted: 113 113 122;
-  --accent: 5 150 105;
+  --surface-2: 244 245 241;
+  --line: 224 226 220;
+  --fg: 20 22 24;
+  --muted: 96 102 106;
+  --accent: 4 132 94;
+  --accent-2: 13 168 122;
   --accent-fg: 255 255 255;
-  --danger: 220 38 38;
-  --success: 22 163 74;
+  --glow: 16 185 129;
+  --danger: 209 42 42;
+  --success: 17 148 68;
+
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.6) inset, 0 10px 26px -14px rgb(15 40 30 / 0.28);
+  --shadow-pop: 0 1px 0 0 rgb(255 255 255 / 0.6) inset, 0 18px 44px -18px rgb(15 40 30 / 0.32);
+  --shadow-glow: 0 8px 30px -10px rgb(var(--glow) / 0.45);
+  --hairline: rgb(255 255 255 / 0.7);
   color-scheme: light;
 }
 
 .dark {
-  --bg: 9 9 11;
-  --surface: 20 20 23;
-  --surface-2: 28 28 33;
-  --line: 39 39 45;
-  --fg: 244 244 246;
-  --muted: 150 150 160;
+  --bg: 6 9 11;
+  --bg-deep: 3 5 6;
+  --surface: 19 24 27;
+  --surface-2: 27 33 37;
+  --line: 42 50 54;
+  --fg: 237 242 240;
+  --muted: 150 162 165;
   --accent: 45 212 167;
-  --accent-fg: 9 9 11;
+  --accent-2: 74 226 190;
+  --accent-fg: 4 16 12;
+  --glow: 45 212 167;
   --danger: 248 113 113;
   --success: 74 222 128;
+
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 12px 34px -16px rgb(0 0 0 / 0.75);
+  --shadow-pop: 0 1px 0 0 rgb(255 255 255 / 0.07) inset, 0 24px 60px -20px rgb(0 0 0 / 0.85);
+  --shadow-glow: 0 10px 40px -10px rgb(var(--glow) / 0.4);
+  --hairline: rgb(255 255 255 / 0.06);
   color-scheme: dark;
 }
 
@@ -37,25 +53,110 @@ body {
 
 body {
   @apply bg-bg text-fg font-sans antialiased;
+  position: relative;
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizeLegibility;
 }
 
-::selection {
-  background-color: rgb(var(--accent) / 0.25);
+/* Ambient premium background: deep base, layered emerald glows, faint engineered
+   grid, vignette. One fixed layer for the whole app; content sits above it. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(52rem 30rem at 50% -12%, rgb(var(--glow) / 0.12), transparent 60%),
+    radial-gradient(40rem 30rem at 100% 8%, rgb(var(--accent-2) / 0.08), transparent 55%),
+    radial-gradient(46rem 34rem at -8% 92%, rgb(var(--glow) / 0.07), transparent 55%),
+    linear-gradient(180deg, rgb(var(--bg)), rgb(var(--bg-deep)));
 }
 
-/* Fokus keyboard yang konsisten & aksesibel */
+/* Faint engineered grid, masked to fade toward the edges. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(var(--fg) / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--fg) / 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  opacity: 0.5;
+}
+
+/* Real content rides above the ambient layers. */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background-color: rgb(var(--glow) / 0.28);
+  color: rgb(var(--fg));
+}
+
 :focus-visible {
-  outline: 2px solid rgb(var(--accent) / 0.6);
+  outline: 2px solid rgb(var(--glow) / 0.65);
   outline-offset: 2px;
 }
 
-/* Subtle grid/glow background untuk halaman auth */
-.aurora {
-  background:
-    radial-gradient(60rem 30rem at 50% -20%, rgb(var(--accent) / 0.10), transparent 70%),
-    radial-gradient(40rem 24rem at 90% 10%, rgb(var(--accent) / 0.06), transparent 70%);
+@layer components {
+  /* Frosted chrome — use sparingly (sidebar, header, modals, search). Carries
+     backdrop-blur, so it must stay on the few persistent surfaces, never on
+     long lists. */
+  .glass {
+    background-color: rgb(var(--surface) / 0.72);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgb(var(--line) / 0.85);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Elevated panel without blur — cheap enough for thousands of list rows.
+     Semi-transparent so the ambient glow tints through. */
+  .panel {
+    background-color: rgb(var(--surface) / 0.7);
+    border: 1px solid rgb(var(--line) / 0.7);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glow-ring {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 22px rgb(var(--glow) / 0.35);
+  }
+  /* Diagonal sheen swept across a surface on hover. */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgb(255 255 255 / 0.06) 45%,
+      transparent 60%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sheen:hover::after {
+    transform: translateX(120%);
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -66,7 +167,24 @@ body {
   scrollbar-width: none;
 }
 
-/* Scrollbar halus */
+/* Custom scrollbar themed from the palette. */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--muted) / 0.6);
+  background-clip: content-box;
+}
 * {
   scrollbar-width: thin;
   scrollbar-color: rgb(var(--line)) transparent;

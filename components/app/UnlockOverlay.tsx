@@ -27,11 +27,11 @@ export function UnlockOverlay() {
   }
 
   return (
-    <div className="aurora flex min-h-dvh items-center justify-center px-5">
-      <div className="w-full max-w-sm animate-fade-in">
+    <div className="flex min-h-dvh items-center justify-center px-5">
+      <div className="w-full max-w-sm animate-rise-in">
         <div className="mb-6 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-accent-fg shadow-lg shadow-accent/20">
-            <LockIcon width={26} height={26} />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-glow ring-1 ring-inset ring-white/20">
+            <LockIcon width={28} height={28} />
           </div>
           <h1 className="text-lg font-semibold">{t("unlock.title")}</h1>
           <p className="mt-1 text-sm text-muted">

@@ -78,29 +78,35 @@ export function AccountCard({
     <div
       {...dragHandlers}
       onClick={copy}
-      className={`group relative flex cursor-pointer items-center gap-3 rounded-2xl border p-3.5 transition-all
+      className={`group sheen relative flex cursor-pointer items-center gap-3.5 rounded-2xl panel p-4 transition-all duration-300 will-change-transform
         ${isDragging ? "opacity-40" : ""}
-        ${isDropTarget ? "border-accent ring-2 ring-accent/30" : "border-line"}
-        bg-surface hover:border-line/80 hover:shadow-sm`}
+        ${
+          isDropTarget
+            ? "border-glow/70 shadow-glow"
+            : "hover:-translate-y-0.5 hover:border-glow/40 hover:shadow-pop"
+        }`}
     >
       <div
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white"
-        style={{ backgroundColor: color }}
+        className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-sm font-bold text-white ring-1 ring-inset ring-white/15"
+        style={{ backgroundColor: color, boxShadow: `0 8px 20px -8px ${color}` }}
       >
-        {issuerInitials(account.issuer || account.label)}
+        <span className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/25 to-transparent" />
+        <span className="relative">{issuerInitials(account.issuer || account.label)}</span>
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <p className="truncate text-sm font-semibold text-fg">{account.issuer || t("common.noName")}</p>
+          <p className="truncate text-sm font-semibold tracking-tight text-fg">{account.issuer || t("common.noName")}</p>
           {account.type === "hotp" && (
-            <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[10px] font-medium text-muted">HOTP</span>
+            <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-muted ring-1 ring-inset ring-line/60">
+              HOTP
+            </span>
           )}
         </div>
         {account.label && <p className="truncate text-xs text-muted">{account.label}</p>}
         <p
-          className={`mt-0.5 whitespace-nowrap font-mono text-2xl font-semibold tracking-wide tabular-nums transition-colors ${
-            copied ? "text-success" : "text-fg"
+          className={`mt-1 whitespace-nowrap font-mono text-[1.75rem] font-semibold leading-none tracking-[0.12em] tabular-nums transition-colors duration-300 ${
+            copied ? "text-success text-glow" : "text-fg text-glow"
           }`}
         >
           {formatCode(code)}
@@ -125,8 +131,8 @@ export function AccountCard({
         )}
 
         <span
-          className={`pointer-events-none absolute right-14 top-3 flex items-center gap-1 rounded-full bg-success px-2 py-0.5 text-xs font-medium text-white transition-opacity ${
-            copied ? "opacity-100" : "opacity-0"
+          className={`pointer-events-none absolute right-14 top-3 flex items-center gap-1 rounded-full bg-success px-2.5 py-0.5 text-xs font-semibold text-white shadow-[0_6px_16px_-6px_rgb(var(--success)/0.7)] transition-opacity duration-200 ${
+            copied ? "animate-copied-pop opacity-100" : "opacity-0"
           }`}
         >
           <CheckIcon width={13} height={13} /> {t("common.copied")}
@@ -145,7 +151,7 @@ export function AccountCard({
             <DotsIcon width={18} height={18} />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 top-9 z-20 w-40 animate-scale-in overflow-hidden rounded-xl border border-line bg-surface py-1 shadow-lg">
+            <div className="glass absolute right-0 top-9 z-20 w-40 origin-top-right animate-scale-in overflow-hidden rounded-2xl py-1 shadow-pop">
               <button
                 type="button"
                 onClick={(e) => {

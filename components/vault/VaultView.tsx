@@ -58,11 +58,14 @@ export function VaultView() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-2xl animate-rise-in">
       <div className="mb-5 flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">{t("vault.title")}</h1>
-          <p className="text-sm text-muted">{t("vault.count", { count: accounts.length })}</p>
+          <h1 className="text-2xl font-semibold tracking-tight">{t("vault.title")}</h1>
+          <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgb(var(--glow)/0.9)]" />
+            {t("vault.count", { count: accounts.length })}
+          </p>
         </div>
         <Button onClick={() => setAddOpen(true)} size="md" className="hidden sm:inline-flex">
           <PlusIcon width={18} height={18} /> {t("action.add")}
@@ -80,14 +83,14 @@ export function VaultView() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("vault.searchPlaceholder")}
-            className="h-11 w-full rounded-lg border border-line bg-surface pl-11 pr-3 text-sm text-fg outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-2 focus:ring-accent/25"
+            className="h-11 w-full rounded-xl border border-line/80 bg-surface/50 pl-11 pr-3 text-sm text-fg outline-none backdrop-blur-sm transition placeholder:text-muted/60 focus:border-glow/60 focus:bg-surface/80 focus:ring-4 focus:ring-glow/15"
           />
         </div>
       )}
 
       {accounts.length === 0 ? (
-        <div className="flex flex-col items-center rounded-2xl border border-dashed border-line py-16 text-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 text-muted">
+        <div className="glass flex flex-col items-center rounded-2xl py-16 text-center">
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-glow ring-1 ring-inset ring-white/20">
             <VaultIcon width={30} height={30} />
           </div>
           <h2 className="text-base font-semibold">{t("vault.emptyTitle")}</h2>
@@ -125,7 +128,7 @@ export function VaultView() {
       {/* FAB mobile */}
       <button
         onClick={() => setAddOpen(true)}
-        className="fixed bottom-20 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-accent-fg shadow-lg shadow-accent/30 transition hover:opacity-90 sm:hidden"
+        className="fixed bottom-20 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-2 to-accent text-accent-fg shadow-[0_10px_30px_-6px_rgb(var(--glow)/0.65)] ring-1 ring-inset ring-white/25 transition hover:brightness-110 active:scale-95 sm:hidden"
         aria-label={t("vault.emptyAdd")}
       >
         <PlusIcon width={24} height={24} />

@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('kripta:theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');var l=localStorage.getItem('kripta:lang');if(l==='id'||l==='en')document.documentElement.lang=l;}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('kripta:theme');var d=t?t==='dark':true;if(d)document.documentElement.classList.add('dark');var l=localStorage.getItem('kripta:lang');if(l==='id'||l==='en')document.documentElement.lang=l;}catch(e){}})();`,
           }}
         />
       </head>
