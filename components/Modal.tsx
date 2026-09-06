@@ -31,7 +31,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md animate-fade-in" onClick={onClose} />
-      <div className="glass relative z-10 flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-t-3xl shadow-pop animate-sheet-up sm:rounded-2xl">
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-t-3xl border border-line/70 bg-surface shadow-pop animate-sheet-up sm:rounded-2xl">
         <div className="flex items-center justify-between border-b border-line/60 px-5 py-4">
           <h2 className="text-sm font-semibold text-fg">{title}</h2>
           <button
