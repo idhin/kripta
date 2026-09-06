@@ -55,6 +55,7 @@ model User {
   invitesCreated Invite[]    @relation("InviteCreatedBy")
   inviteUsed     Invite?     @relation("InviteUsedBy")
   auditLogs      AuditLog[]
+  apiTokens      ApiToken[]
 
   @@index([status])
 }
@@ -105,6 +106,31 @@ model VaultItem {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Token akses API read-only untuk integrasi pihak ketiga (auto get OTP).
+// Prinsip zero-knowledge-at-rest: server menyimpan wrappedVaultKey (vaultKey yang
+// dibungkus AES-GCM oleh kunci K). K HANYA ada di dalam string token milik user,
+// tidak pernah dikirim/disimpan ke server. Tanpa K, blob ini tidak bisa dibuka.
+model ApiToken {
+  id        String @id @default(cuid())
+  userId    String
+  name      String
+
+  // sha256(hex) dari bagian selektor (tid) token. Dipakai untuk lookup + verifikasi.
+  tokenHash String @unique
+
+  // vaultKey yang dibungkus AES-GCM oleh kunci K ("v1.<ivB64>.<ctB64>").
+  wrappedVaultKey String
+
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime?
+  revokedAt  DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

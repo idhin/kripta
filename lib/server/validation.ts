@@ -53,6 +53,12 @@ export const reorderSchema = z.object({
   ids: z.array(z.string().min(1).max(64)).max(500),
 });
 
+export const apiTokenCreateSchema = z.object({
+  name: z.string().trim().min(1).max(64),
+  tokenHash: z.string().regex(/^[0-9a-f]{64}$/, "tokenHash harus sha256 hex."),
+  wrappedVaultKey: z.string().min(1).max(4096),
+});
+
 export const passwordChangeSchema = z.object({
   currentAuthHash: b64,
   newAuthHash: b64,
@@ -73,4 +79,9 @@ export const recoveryResetSchema = z.object({
   kdfSalt: b64,
   kdfParams: kdfParamsSchema,
   protectedVaultKey: b64,
+});
+
+export const vaultExportLogSchema = z.object({
+  format: z.enum(["json", "csv", "uri"]),
+  count: z.number().int().min(0).max(10000),
 });

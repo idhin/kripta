@@ -207,6 +207,41 @@ const en: Dict = {
   "settings.unknownIp": "Unknown IP",
   "settings.sessionSection": "Session",
   "settings.signOut": "Sign out of Kripta",
+
+  // API access
+  "api.title": "API access",
+  "api.desc": "Create tokens so other apps can read your current OTP codes over the API. Treat a token like a password.",
+  "api.namePlaceholder": "Token name (e.g. CI pipeline)",
+  "api.generate": "Generate token",
+  "api.newTokenTitle": "Copy your token now",
+  "api.newTokenHint": "This is shown only once. Store it somewhere safe. If you lose it, revoke and create a new one.",
+  "api.copy": "Copy",
+  "api.copied": "Copied",
+  "api.done": "Done",
+  "api.revoke": "Revoke",
+  "api.empty": "No API tokens yet.",
+  "api.lastUsed": "Last used",
+  "api.neverUsed": "Never used",
+  "api.created": "Created",
+  "api.vaultLocked": "Unlock your vault first to create a token.",
+  "api.createFail": "Failed to create token.",
+
+  // Vault export
+  "export.title": "Export vault",
+  "export.desc": "Download every account, including its raw TOTP secret. Decryption happens in this browser \u2014 the file never passes through the server.",
+  "export.warning": "The file contains your secrets in plain text. Anyone who gets it can generate your codes forever. Store it encrypted and delete it once you are done.",
+  "export.json": "JSON",
+  "export.jsonHint": "Full fields, easiest to script against.",
+  "export.csv": "CSV",
+  "export.csvHint": "Spreadsheet friendly.",
+  "export.uri": "otpauth URIs",
+  "export.uriHint": "One otpauth:// line per account, importable by other apps.",
+  "export.count": "{n} accounts in this vault.",
+  "export.done": "Exported {n} accounts.",
+  "export.doneSkipped": "Exported {n} accounts, skipped {skipped} with an unsupported secret.",
+  "export.empty": "There is nothing to export yet.",
+  "export.vaultLocked": "Unlock your vault first to export.",
+  "export.fail": "Failed to build the export file.",
   "device.unknown": "Unknown device",
 
   // Admin
@@ -261,6 +296,9 @@ const en: Dict = {
   "audit.vault.item_created": "Item created",
   "audit.vault.item_updated": "Item updated",
   "audit.vault.item_deleted": "Item deleted",
+  "audit.vault.exported": "Vault exported",
+  "audit.token.created": "API token created",
+  "audit.token.revoked": "API token revoked",
 };
 
 const id: Dict = {
@@ -435,6 +473,41 @@ const id: Dict = {
   "settings.unknownIp": "IP tak diketahui",
   "settings.sessionSection": "Sesi",
   "settings.signOut": "Keluar dari Kripta",
+
+  // API access
+  "api.title": "Akses API",
+  "api.desc": "Buat token agar aplikasi lain bisa membaca kode OTP terkini lewat API. Perlakukan token seperti password.",
+  "api.namePlaceholder": "Nama token (mis. CI pipeline)",
+  "api.generate": "Buat token",
+  "api.newTokenTitle": "Salin token sekarang",
+  "api.newTokenHint": "Token hanya ditampilkan sekali. Simpan di tempat aman. Jika hilang, cabut dan buat baru.",
+  "api.copy": "Salin",
+  "api.copied": "Tersalin",
+  "api.done": "Selesai",
+  "api.revoke": "Cabut",
+  "api.empty": "Belum ada token API.",
+  "api.lastUsed": "Terakhir dipakai",
+  "api.neverUsed": "Belum pernah dipakai",
+  "api.created": "Dibuat",
+  "api.vaultLocked": "Buka vault dulu untuk membuat token.",
+  "api.createFail": "Gagal membuat token.",
+
+  // Export vault
+  "export.title": "Export vault",
+  "export.desc": "Unduh seluruh akun beserta secret TOTP mentahnya. Dekripsi terjadi di browser ini \u2014 berkasnya tidak pernah melewati server.",
+  "export.warning": "Berkas ini berisi secret dalam bentuk teks biasa. Siapa pun yang memilikinya bisa membuat kode Anda selamanya. Simpan terenkripsi dan hapus setelah selesai dipakai.",
+  "export.json": "JSON",
+  "export.jsonHint": "Field lengkap, paling mudah diolah skrip.",
+  "export.csv": "CSV",
+  "export.csvHint": "Cocok untuk spreadsheet.",
+  "export.uri": "URI otpauth",
+  "export.uriHint": "Satu baris otpauth:// per akun, bisa diimpor aplikasi lain.",
+  "export.count": "{n} akun di vault ini.",
+  "export.done": "{n} akun berhasil diekspor.",
+  "export.doneSkipped": "{n} akun diekspor, {skipped} dilewati karena secret-nya tidak didukung.",
+  "export.empty": "Belum ada yang bisa diekspor.",
+  "export.vaultLocked": "Buka vault dulu untuk mengekspor.",
+  "export.fail": "Gagal menyusun berkas export.",
   "device.unknown": "Perangkat tidak dikenal",
 
   "admin.title": "Admin",
@@ -487,6 +560,9 @@ const id: Dict = {
   "audit.vault.item_created": "Item dibuat",
   "audit.vault.item_updated": "Item diubah",
   "audit.vault.item_deleted": "Item dihapus",
+  "audit.vault.exported": "Vault diekspor",
+  "audit.token.created": "Token API dibuat",
+  "audit.token.revoked": "Token API dicabut",
 };
 
 export const messages: Record<Locale, Dict> = { en, id };

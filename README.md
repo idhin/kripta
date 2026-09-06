@@ -42,6 +42,7 @@ Most authenticators either lock your secrets to a single device or hand your dat
 - **Invitations.** Add users with optional email pinning, User or Superadmin roles, and link expiry.
 - **Mandatory recovery codes.** The only way to recover access if you forget your password. The server cannot reset it for you.
 - **Admin dashboard.** Manage users, invitations, and a full audit log.
+- **Vault export.** Download every account with its raw TOTP secret as JSON, CSV, or `otpauth://` URIs. Decryption happens in the browser, so the file never passes through the server.
 - **Account management.** Change your password without re-encrypting items, review and revoke active sessions.
 - **Polished UI.** English and Bahasa Indonesia, light and dark themes, responsive layout (desktop sidebar, mobile bottom navigation).
 
@@ -157,6 +158,8 @@ Just back up the database. It only contains ciphertext and hashes:
 ```bash
 docker compose exec db pg_dump -U kripta kripta > kripta-backup.sql
 ```
+
+That dump restores the vault only together with the password that encrypts it. For a copy you can read without Kripta, use **Settings > Export vault**, which writes the raw secrets to a local file. Treat that file like the secrets themselves.
 
 ## Tech stack
 

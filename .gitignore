@@ -32,3 +32,6 @@ next-env.d.ts
 
 # local marketing assets (not for public repo)
 /docs/linkedin/
+
+# typescript build info
+tsconfig.tsbuildinfo

@@ -20,7 +20,10 @@ export type AuditAction =
   | "session.revoked"
   | "vault.item_created"
   | "vault.item_updated"
-  | "vault.item_deleted";
+  | "vault.item_deleted"
+  | "vault.exported"
+  | "token.created"
+  | "token.revoked";
 
 /** Mencatat event keamanan. `meta` tidak boleh berisi secret/plaintext OTP. */
 export async function audit(

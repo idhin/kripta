@@ -57,6 +57,16 @@ function fromB64(b64: string): Uint8Array {
   return out;
 }
 
+function toB64url(bytes: Uint8Array): string {
+  return toB64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function toHex(bytes: Uint8Array): string {
+  let s = "";
+  for (let i = 0; i < bytes.length; i++) s += bytes[i].toString(16).padStart(2, "0");
+  return s;
+}
+
 /** Salin ke ArrayBuffer murni agar cocok dengan tipe BufferSource. */
 function buf(bytes: Uint8Array): ArrayBuffer {
   return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
@@ -295,6 +305,37 @@ export async function decryptItem<T>(blob: ItemBlob, vaultKey: Uint8Array): Prom
   const ct = fromB64(blob.ciphertext);
   const pt = await aesGcmDecrypt(vaultKey, iv, ct);
   return JSON.parse(dec.decode(pt)) as T;
+}
+
+// ---------- token API (auto get OTP) ----------
+
+export interface ApiTokenMaterial {
+  /** sha256 hex dari bagian selektor (tid); dikirim & disimpan server. */
+  tokenHash: string;
+  /** vaultKey terbungkus oleh K ("v1.<iv>.<ct>"); disimpan server tanpa K. */
+  wrappedVaultKey: string;
+  /** String token utuh untuk ditampilkan sekali ke user (mengandung K). */
+  raw: string;
+}
+
+/**
+ * Membuat material token API di browser (butuh vaultKey aktif).
+ * Format token: "kripta_<tidB64url>.<KB64url>". K hanya ada di string ini,
+ * tidak pernah dikirim ke server; server hanya menerima tokenHash + wrappedVaultKey.
+ */
+export async function createApiToken(vaultKey: Uint8Array): Promise<ApiTokenMaterial> {
+  const tid = randomBytes(32);
+  const k = randomBytes(KEY_LEN);
+
+  const wrap = await aesGcmEncrypt(k, vaultKey);
+  const wrappedVaultKey = packBlob(wrap.iv, wrap.ct);
+
+  const tidB64url = toB64url(tid);
+  const kB64url = toB64url(k);
+  const tokenHash = toHex(await sha256(enc.encode(tidB64url)));
+  const raw = `kripta_${tidB64url}.${kB64url}`;
+
+  return { tokenHash, wrappedVaultKey, raw };
 }
 
 // ---------- penyimpanan vaultKey di sesi (sessionStorage) ----------

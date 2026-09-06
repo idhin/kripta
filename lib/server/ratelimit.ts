@@ -11,6 +11,7 @@ const limiters = {
   invite: new RateLimiterMemory({ points: 30, duration: 3600 }),
   recovery: new RateLimiterMemory({ points: 8, duration: 900, blockDuration: 900 }),
   mutate: new RateLimiterMemory({ points: 120, duration: 60 }),
+  api: new RateLimiterMemory({ points: 60, duration: 60 }),
 };
 
 export type LimiterName = keyof typeof limiters;
